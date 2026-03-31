@@ -26,8 +26,8 @@ Qu-Pac capability notes used by this module:
 ## Current v4 action coverage
 
 - Input mute and PAFL
-- Input fader level
-- Input send level to mix
+- Input fader level (supports Companion variables)
+- Input send level to mix (supports Companion variables)
 - Scene recall and scene step
 - SoftKey fire action
 - QuDrive transport (play/stop)
