@@ -1,0 +1,19 @@
+{
+  "$schema": "../node_modules/@companion-module/base/assets/manifest.schema.json",
+  "type": "connection",
+  "id": "allenheath-qu",
+  "name": "allenheath-qu",
+  "shortname": "QU",
+  "description": "Allen & Heath Qu series module for Companion v4",
+  "version": "2.0.1",
+  "license": "MIT",
+  "manufacturer": "Allen & Heath",
+  "products": ["QU16", "QU24", "QU32", "QUSB", "QUPAC"],
+  "keywords": ["Allen & Heath", "Qu", "QUPAC", "QUSB"],
+  "runtime": {
+    "type": "node22",
+    "api": "nodejs-ipc",
+    "apiVersion": "2.0.0",
+    "entrypoint": "../src/main.js"
+  }
+}

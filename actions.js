@@ -171,7 +171,7 @@ module.exports = {
 
 		this.faderOptions = (name, qty, ofs, st = 0) => {
 			var i
-			let ch
+			let ch = 1
 			this.CHOICES = []
 			for (i = 1; i <= qty; i++) {
 				let ele = st < 99 ? i : `${ch}/${ch + 1}`
@@ -209,7 +209,7 @@ module.exports = {
 
 		this.panOptions = (name, qty, ofs, st = 0, chs, lev = false) => {
 			var i
-			let ch
+			let ch = 1
 			this.CHOICES = []
 			for (i = 1; i <= qty; i++) {
 				let ele = st < 99 ? i : `${ch}/${ch + 1}`
