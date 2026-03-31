@@ -374,12 +374,12 @@ class instance extends instance_skel {
 	setScene(val) {
 		var self = this
 		var qu = quconfig['config'][self.config.model]
-		var scn
+		var scn = 0
 
 		self.getVariable('currentScene', function(res) {
 			scn = parseInt(res) - 1 + val
 			if (scn < 0) scn = 0
-			if (scn > qu['sceneCount']) scn = qu['sceneCount'] - 1
+			if (scn >= qu['sceneCount']) scn = qu['sceneCount'] - 1
 		})
 
 		return scn
@@ -389,8 +389,9 @@ class instance extends instance_skel {
 		var self = this
 		var db
 		var dc = '999'
+		const varName = `${act}_${ch}` + (mix != 999 ? `_${mix}` : '')
 
-		self.getVariable(`${act}_${ch}` + (mix != 999 ? `_${mix}` : ''), function (res) {
+		self.getVariable(varName, function (res) {
 			if (res !== undefined) {
 				if (res == '-inf') res = -56
 				res = parseFloat(res.toString().replace(/^[\+]?/g, '')) + (step == 998 ? -1 : 1)
@@ -433,8 +434,8 @@ class instance extends instance_skel {
 			}
 		})
 
-		if (dc != 999) self.setVariable(`${act}_${ch}` + (mix != 999 ? `_${mix}` : ''), dc)
-		return db
+		if (dc != 999) self.setVariable(varName, dc)
+		return db !== undefined ? db : 0
 	}
 
 	getChannel(ch) {
