@@ -118,15 +118,16 @@ class AllenHeathQuInstance extends InstanceBase {
 				options: [
 					this.channelDropdown(inputChoices),
 					{
-						type: 'textinput',
+						type: 'number',
 						id: 'level',
-						label: 'MIDI level (0-127, variables supported)',
-						default: '98',
-						useVariables: true,
+						label: 'MIDI level (0-127)',
+						default: 98,
+						min: 0,
+						max: 127,
 					},
 				],
 				callback: async (event) => {
-					const level = this.clamp(parseInt(String(event.options.level ?? '98'), 10), 0, 127)
+					const level = this.clamp(parseInt(String(event.options.level ?? 98), 10), 0, 127)
 					const channel = CHANNEL_TYPES.input + parseInt(event.options.channel, 10)
 					this.state.level[channel] = level
 					this.setVariableValues({ [`level_${channel}`]: String(level) })
@@ -145,15 +146,16 @@ class AllenHeathQuInstance extends InstanceBase {
 						choices: mixChoices,
 					},
 					{
-						type: 'textinput',
+						type: 'number',
 						id: 'level',
-						label: 'MIDI level (0-127, variables supported)',
-						default: '98',
-						useVariables: true,
+						label: 'MIDI level (0-127)',
+						default: 98,
+						min: 0,
+						max: 127,
 					},
 				],
 				callback: async (event) => {
-					const level = this.clamp(parseInt(String(event.options.level ?? '98'), 10), 0, 127)
+					const level = this.clamp(parseInt(String(event.options.level ?? 98), 10), 0, 127)
 					const channel = CHANNEL_TYPES.input + parseInt(event.options.channel, 10)
 					const mix = parseInt(event.options.mix, 10)
 					this.state.sendLevel[`${channel}_${mix}`] = level
