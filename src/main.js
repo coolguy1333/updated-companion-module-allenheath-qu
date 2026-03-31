@@ -356,7 +356,12 @@ class AllenHeathQuInstance extends InstanceBase {
 
 	send(buffer) {
 		if (this.socket && !this.socket.destroyed) {
-			this.socket.write(buffer)
+			this.socket.write(buffer, (err) => {
+				if (err) {
+					this.log('error', `TCP write error: ${err.message}`)
+					this.updateStatus(InstanceStatus.ConnectionFailure, err.message)
+				}
+			})
 		}
 	}
 
