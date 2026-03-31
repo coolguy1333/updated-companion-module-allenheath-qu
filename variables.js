@@ -66,8 +66,8 @@ module.exports = {
 		}
 
 		if (this.config.model != 'QU16') {
+			let ca = 1
 			for (let i = 0; i < qu['grpCount']; i++) {
-				let ca = 1
 				variables.push({
 					label: `Group ${ca}/${ca + 1} Level`,
 					name: `level_mix_${104 + i}`,
@@ -82,8 +82,8 @@ module.exports = {
 				ca = ca + 2
 			}
 
+			ca = 1
 			for (let i = 0; i < qu['mtxCount']; i++) {
-				let ca = 1
 				variables.push({
 					label: `Matrix ${ca}/${ca + 1} Level`,
 					name: `level_mix_${108 + i}`,
