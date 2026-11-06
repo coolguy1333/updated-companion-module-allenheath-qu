@@ -118,15 +118,16 @@ class AllenHeathQuInstance extends InstanceBase {
 				options: [
 					this.channelDropdown(inputChoices),
 					{
-						type: 'textinput',
+						type: 'number',
 						id: 'level',
-						label: 'MIDI level (0-127, variables supported)',
-						default: '98',
-						useVariables: true,
+						label: 'MIDI level (0-127)',
+						default: 98,
+						min: 0,
+						max: 127,
 					},
 				],
 				callback: async (event) => {
-					const level = await this.parseMidiValueOption(event.options.level, 98)
+					const level = this.clamp(parseInt(String(event.options.level ?? 98), 10), 0, 127)
 					const channel = CHANNEL_TYPES.input + parseInt(event.options.channel, 10)
 					this.state.level[channel] = level
 					this.setVariableValues({ [`level_${channel}`]: String(level) })
@@ -145,15 +146,16 @@ class AllenHeathQuInstance extends InstanceBase {
 						choices: mixChoices,
 					},
 					{
-						type: 'textinput',
+						type: 'number',
 						id: 'level',
-						label: 'MIDI level (0-127, variables supported)',
-						default: '98',
-						useVariables: true,
+						label: 'MIDI level (0-127)',
+						default: 98,
+						min: 0,
+						max: 127,
 					},
 				],
 				callback: async (event) => {
-					const level = await this.parseMidiValueOption(event.options.level, 98)
+					const level = this.clamp(parseInt(String(event.options.level ?? 98), 10), 0, 127)
 					const channel = CHANNEL_TYPES.input + parseInt(event.options.channel, 10)
 					const mix = parseInt(event.options.mix, 10)
 					this.state.sendLevel[`${channel}_${mix}`] = level
@@ -185,8 +187,7 @@ class AllenHeathQuInstance extends InstanceBase {
 				options: [{ type: 'dropdown', id: 'key', label: 'SoftKey', default: 1, choices: softKeyChoices }],
 				callback: async (event) => {
 					const keyIndex = parseInt(event.options.key, 10)
-					const midiKey = 0x6f + keyIndex
-					this.send(Buffer.from([0x90, midiKey, 0x7f, 0x80, midiKey, 0x00]))
+					this.send(Buffer.from([0x90, 0x70 + keyIndex, 0x7f, 0x80, 0x70 + keyIndex, 0x00]))
 				},
 			},
 			qudrive_transport: {
@@ -356,12 +357,7 @@ class AllenHeathQuInstance extends InstanceBase {
 
 	send(buffer) {
 		if (this.socket && !this.socket.destroyed) {
-			this.socket.write(buffer, (err) => {
-				if (err) {
-					this.log('error', `TCP write error: ${err.message}`)
-					this.updateStatus(InstanceStatus.ConnectionFailure, err.message)
-				}
-			})
+			this.socket.write(buffer)
 		}
 	}
 
@@ -387,11 +383,6 @@ class AllenHeathQuInstance extends InstanceBase {
 	clamp(value, min, max) {
 		if (Number.isNaN(value)) return min
 		return Math.min(max, Math.max(min, value))
-	}
-
-	async parseMidiValueOption(optionValue, fallback) {
-		const parsed = await this.parseVariablesInString(String(optionValue ?? fallback))
-		return this.clamp(parseInt(parsed, 10), 0, 127)
 	}
 }
 
